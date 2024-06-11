@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% block titulo %} INDEX BARRIOS {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Barrios</h4>
+        <p class="card-text">
+            
+            <a name="" id="" class="btn btn-success" href="{% url 'crearbarrio' %}" role="button">Crear Barrio</a>
+        </p>
+
+        <div class="table-responsive"> 
+            <table id="tablaBarrios" class="table table-striped table-borderless table-primary align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Barrio</th>
+                        <th>Zona</th>
+                        <th>Opciones</th> 
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for barrio in barrios %}
+                    <tr class="table-primary">
+                        <td>{{ barrio.id }}</td>
+                        <td>{{ barrio.barrio }}</td>
+                        <td>{{ barrio.get_zona_display }}</td>
+                        <td>
+                            <a name="editar" id="" class="btn btn-primary" href="{% url 'editarbarrio' barrio.id %}" role="button">Editar</a>
+                            <a name="eliminar" id="eliminar_{{ barrio.id }}" class="btn btn-danger" href="#" role="button">Eliminar</a>
+                        </td>
+                    </tr>
+                    <script>
+                        document.getElementById('eliminar_{{ barrio.id }}').addEventListener('click', function() {
+                            if (confirm('¿Estás seguro de que deseas eliminar este barrio?')) {
+                                window.location.href = "{% url 'eliminarbarrio' barrio.id %}";
+                            }
+                        });
+                    </script>
+                    {% endfor %} 
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Agrega las referencias y el script de DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<script>
+    // Inicializa la tabla con DataTables
+    $(document).ready(function() {
+        $('#tablaBarrios').DataTable();
+    });
+</script>
+
+{% endblock %} 

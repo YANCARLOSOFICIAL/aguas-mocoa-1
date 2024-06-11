@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block titulo %} Editar Suscriptor {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Editar Suscriptor</h4>
+
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {% for field in formulario %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {% if field.name == 'barrio' %}
+                <select name="{{ field.name }}" class="form-control">
+                    {% for barrio in barrios %}
+                    <option value="{{ barrio.pk }}">{{ barrio.barrio }}</option>
+                    {% endfor %}
+                </select>
+                {% elif field.name == 'Estrato_socioeconomico' or field.name == 'Uso' %}
+                <select name="{{ field.name }}" class="form-control">
+                    {% for value, label in field.field.choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                {{ field }}
+                {% endif %}
+                <div class="col-12 help-text">{{ field.errors }}</div>
+            </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value="Guardar">
+        </form>
+    </div>
+</div>
+{% endblock %}

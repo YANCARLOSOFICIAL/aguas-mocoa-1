@@ -1,0 +1,17 @@
+{% extends 'layout.html' %} {% block titulo %} ELIMINAR SUSCRIPTOR DE MICROMEDIDOR {% endblock %} {% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <p class="card-text">
+            <h4>¿Estás seguro de que deseas eliminar este suscriptor asociado a este micromedidor?</h4> 
+            <p>{{ barrio.barrio }}</p>
+
+            <form method="post" action="{% url 'eliminarlectura' lectura.id %}"> 
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a href="{% url 'indexlectura' %}" class="btn btn-secondary">Cancelar</a> 
+            </form>
+        </p>
+    </div>
+</div>
+{% endblock %} 
+

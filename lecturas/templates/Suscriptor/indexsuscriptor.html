@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block titulo %} INDEX SUSCRIPTORES {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Suscriptores</h4>
+        <p class="card-text">
+            {% if perms.lecturas.add_suscriptor %}
+                <a class="btn btn-success" href="{% url 'crearsuscriptor' %}" role="button">Crear Suscriptor</a>
+            {% endif %}
+        </p>
+
+        <div class="table-responsive">
+            <table id="tablaSuscriptores" class="table table-striped table-borderless table-primary align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Primer Nombre</th>
+                        <th>Segundo Nombre</th>
+                        <th>Primer Apellido</th>
+                        <th>Segundo Apellido</th>
+                        <th>Barrio</th>
+                        <th>Estrato Socioeconómico</th>
+                        <th>Uso</th>
+                        <th>Imagen</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for suscriptor in suscriptores %}
+                    <tr class="table-primary">
+                        <td>{{ suscriptor.id }}</td>
+                        <td>{{ suscriptor.primer_nombre }}</td>
+                        <td>{{ suscriptor.segundo_nombre }}</td>
+                        <td>{{ suscriptor.primer_apellido }}</td>
+                        <td>{{ suscriptor.segundo_apellido }}</td>
+                        <td>{{ suscriptor.barrio.barrio }}</td>
+                        <td>{{ suscriptor.get_Estrato_socioeconomico_display }}</td> 
+                        <td>{{ suscriptor.get_Uso_display }}</td>
+                        <td><img src="{{ suscriptor.direccion_IMAGEN.url }}" height="100"></td> <!-- Muestra la imagen -->
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'editarsuscriptor' suscriptor.id %}" role="button">Editar</a>
+                            {% if perms.lecturas.delete_suscriptor %}
+                                <a id="eliminar_{{ suscriptor.id }}" class="btn btn-danger" href="#" role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <script>
+                        document.getElementById('eliminar_{{ suscriptor.id }}').addEventListener('click', function() {
+                            if (confirm('¿Estás seguro de que deseas eliminar este suscriptor?')) {
+                                window.location.href = "{% url 'eliminarsuscriptor' suscriptor.id %}";
+                            }
+                        });
+                    </script>
+                    {% endfor %}
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Agrega las referencias y el script de DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<script>
+    // Inicializa la tabla con DataTables
+    $(document).ready(function() {
+        $('#tablaSuscriptores').DataTable();
+    });
+</script>
+
+{% endblock %}

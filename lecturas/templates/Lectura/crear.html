@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+{% block titulo %} CREAR LECTURA {% endblock %} 
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Crear Lectura</h4>
+        <div class="mb-3">
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Suscriptor Micromedidor:</label>
+                    <select name="suscriptor_micromedidor" class="form-control" id="id_suscriptor_micromedidor">
+                        {% for suscriptor_micromedidor in suscriptores_micromedidores %}
+                            <option value="{{ suscriptor_micromedidor.id }}">{{ suscriptor_micromedidor.suscriptor.primer_nombre }} {{suscriptor_micromedidor.suscriptor.segundo_nombre}} {{suscriptor_micromedidor.suscriptor.primer_apellido}} {{suscriptor_micromedidor.micromedidor.medidor}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Lectura Actual:</label>
+                    <input type="number" name="lectura_actual" class="form-control" id="id_lectura_actual" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Lectura Anterior:</label>
+                    <input type="number" name="lectura_anterior" class="form-control" id="id_lectura_anterior" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Consumo Total:</label>
+                    <input type="number" name="consumototal" class="form-control" id="id_consumototal" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Observaciones:</label>
+                    <textarea name="Observaciones" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Lectura:</label>
+                    <select name="tipo_lectura" class="form-control">
+                        {% for tipo, label in form.tipo_lectura.field.choices %}
+                            <option value="{{ tipo }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Estado del Micromedidor:</label>
+                    <select name="estado_micromedidor" class="form-control">
+                        {% for estado, label in form.estado_micromedidor.field.choices %}
+                            <option value="{{ estado }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mes Anterior:</label>
+                    <input type="text" name="mes_anterior" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mes Actual:</label>
+                    <input type="text" name="mes_actual" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Lectura:</label>
+                    <input type="text" name="FechaLectura" class="form-control" id="id_fechalectura" readonly>
+                </div>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary" onclick="calcularConsumoTotal()">Calcular Consumo Total</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = ('0' + (now.getMonth() + 1)).slice(-2);
+        var day = ('0' + now.getDate()).slice(-2);
+        var hours = ('0' + now.getHours()).slice(-2); 
+        var minutes = ('0' + now.getMinutes()).slice(-2);
+
+        var formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+        document.getElementById('id_fechalectura').value = formattedDateTime;
+
+        var monthNames = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        var monthIndex = now.getMonth();
+        var previousMonth = monthIndex === 0 ? 11 : monthIndex - 1;
+
+        document.querySelector('input[name="mes_actual"]').value = monthNames[monthIndex];
+        document.querySelector('input[name="mes_anterior"]').value = monthNames[previousMonth];
+    });
+
+    function calcularConsumoTotal() {
+        var lecturaActual = parseInt(document.getElementById('id_lectura_actual').value);
+        var lecturaAnterior = parseInt(document.getElementById('id_lectura_anterior').value);
+
+        if (!isNaN(lecturaActual) && !isNaN(lecturaAnterior)) {
+            var consumoTotal = lecturaActual - lecturaAnterior;
+            document.getElementById('id_consumototal').value = consumoTotal;
+        }
+    }
+    
+    $(document).ready(function() {
+        $('#id_suscriptor_micromedidor').select2({
+            placeholder: 'Seleccione un suscriptor micromedidor',
+            allowClear: true
+        });
+    });
+</script>
+{% endblock %}

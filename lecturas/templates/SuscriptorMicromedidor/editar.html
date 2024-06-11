@@ -1,0 +1,35 @@
+<!-- editar_suscriptor_micromedidor.html -->
+
+{% extends 'layout.html' %}
+{% block titulo %} EDITAR SUSCRIPTOR DE MICROMEDIDOR {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Editar Suscriptor de Micromedidor</h4>
+        <div class="mb-3">
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Suscriptor:</label>
+                    <select name="suscriptor" class="form-control">
+                        {% for suscriptor in suscriptores %}
+                            <option value="{{ suscriptor.id }}" {% if suscriptor.id == form.instance.suscriptor.id %} selected {% endif %}>{{ suscriptor.primer_nombre }} {{suscriptor.segundo_nombre}}</option>
+                        {% endfor %}
+                    </select> 
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Micromedidor:</label>
+                    <select name="micromedidor" class="form-control">
+                        {% for micromedidor in micromedidores %}
+                            <option value="{{ micromedidor.id }}" {% if micromedidor.id == form.instance.micromedidor.id %} selected {% endif %}>{{ micromedidor.medidor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'layout.html' %} {% block titulo %} ELIMINAR BARRIO {% endblock %} {% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <p class="card-text">
+            <h4>¿Estás seguro de que deseas eliminar este suscriptor?</h4> 
+            <p>{{ barrio.barrio }}</p>
+
+            <form method="post" action="{% url 'eliminarsuscriptor' suscriptor.id %}"> 
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a href="{% url 'indexsuscriptor' %}" class="btn btn-secondary">Cancelar</a> 
+            </form>
+        </p>
+    </div>
+</div>
+{% endblock %}

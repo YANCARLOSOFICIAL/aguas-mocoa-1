@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block titulo %} INFORMES DE LECTURAS {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Informes de Lecturas del Mes Actual</h4>
+        <div class="mb-3">
+            <p>Total de lecturas en el mes actual: {{ total_lecturas_mes_actual }}</p>
+            <p>Total de micromedidores: {{ total_micromedidores }}</p>
+            <p>Micromedidores con lectura registrada en el mes actual: {{ micromedidores_con_lectura }}</p>
+            <p>Micromedidores sin lectura registrada en el mes actual: {{ micromedidores_sin_lectura }}</p>
+            
+        </div>
+        <h4 class="card-title">Total de Lecturas por Año</h4>
+        <div class="mb-3">
+            <ul>
+                {% for anio, conteo in conteo_lecturas_por_anio.items %}
+                    <li>{{ anio }}: {{ conteo }}</li>
+                {% endfor %}
+            </ul>
+        </div> 
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

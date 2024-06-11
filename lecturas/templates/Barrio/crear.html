@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block titulo %} CREAR BARRIOS {% endblock %}
+
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <p class="card-text">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ formulario.as_p }}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </p>
+    </div>
+</div>
+{% endblock %}

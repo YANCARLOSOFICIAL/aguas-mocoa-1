@@ -1,0 +1,68 @@
+
+{% extends 'layout.html' %}
+
+{% block titulo %} INDEX MICROMEDIDORES {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Micromedidores</h4>
+        <p class="card-text">
+            {% if perms.lecturas.add_micromedidor %}
+                <a name="" id="" class="btn btn-success" href="{% url 'crearmicromedidor' %}" role="button">Crear Micromedidor</a>
+            {% endif %}
+        </p>
+
+        <div class="table-responsive">
+            <table id="tablaMicromedidores" class="table table-striped table-borderless table-primary align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>NUID</th>
+                        <th>Medidor</th>
+                        <th>Fecha de Instalación</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for micromedidor in micromedidores %}
+                    <tr class="table-primary">
+                        <td>{{ micromedidor.id }}</td>
+                        <td>{{ micromedidor.nuid }}</td>
+                        <td>{{ micromedidor.medidor }}</td>
+                        <td>{{ micromedidor.fecha_instalacion }}</td>
+                        <td>
+                            <a name="editar" id="" class="btn btn-primary" href="{% url 'editarmicromedidor' micromedidor.id %}" role="button">Editar</a>
+                            {% if perms.lecturas.delete_micromedidor %}
+                                <a name="eliminar" id="eliminar_{{ micromedidor.id }}" class="btn btn-danger" href="#" role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <script>
+                        document.getElementById('eliminar_{{ micromedidor.id }}').addEventListener('click', function() {
+                            if (confirm('¿Estás seguro de que deseas eliminar este micromedidor?')) {
+                                window.location.href = "{% url 'eliminarmicromedidor' micromedidor.id %}";
+                            }
+                        });
+                    </script>
+                    {% endfor %}
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Agrega las referencias y el script de DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<script>
+    // Inicializa la tabla con DataTables
+    $(document).ready(function() {
+        $('#tablaMicromedidores').DataTable();
+    });
+</script>
+
+{% endblock %}
+

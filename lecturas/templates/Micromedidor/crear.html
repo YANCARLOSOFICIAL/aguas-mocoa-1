@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block titulo %} CREAR MICROMEDIDOR {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Crear Micromedidor</h4>
+        <div class="mb-3">
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">NUID:</label>
+                    <input type="text" class="form-control {% if formulario.nuid.errors %} is-invalid {% endif %}" name="nuid" value="{{ formulario.nuid.value }}" required> 
+                    {% if formulario.nuid.errors %}
+                        <div class="invalid-feedback">{{ formulario.nuid.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Medidor:</label>
+                    <input type="text" class="form-control" name="medidor" value="{{ formulario.medidor.value }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Instalación:</label>
+                    <input type="date" class="form-control" name="fecha_instalacion" value="{{ formulario.fecha_instalacion.value }}" required>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

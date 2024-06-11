@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% block titulo %} INDEX SUSCRIPTORES DE MICROMEDIDORES {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Suscriptores de Micromedidores</h4>
+        <p class="card-text">
+            {% if perms.lecturas.add_suscriptormicromedidor %}
+                <a class="btn btn-success" href="{% url 'crearsuscriptormicromedidor' %}" role="button">Crear Suscriptor de Micromedidor</a>
+            {% endif %}
+        </p>
+
+        <div class="table-responsive"> 
+            <table id="tablaSuscriptoresMicromedidores" class="table table-striped table-borderless table-primary align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Suscriptor</th>
+                        <th>Micromedidor</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for suscriptor_micromedidor in suscriptormicromedidor %}
+                    <tr class="table-primary">
+                        <td>{{ suscriptor_micromedidor.id }}</td>
+                        <td>{{ suscriptor_micromedidor.suscriptor.primer_nombre }} {{ suscriptor_micromedidor.suscriptor.segundo_nombre }} {{ suscriptor_micromedidor.suscriptor.primer_apellido }}   </td>
+                        <td>{{ suscriptor_micromedidor.micromedidor.medidor }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'editarsuscriptormicromedidor' suscriptor_micromedidor.id %}" role="button">Editar</a>
+                            {% if perms.lecturas.delete_suscriptormicromedidor %}
+                                <a id="eliminar_{{ suscriptor_micromedidor.id }}" class="btn btn-danger" href="{% url 'eliminarsuscriptormicromedidor' suscriptor_micromedidor.id %}" role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <script>
+                        document.getElementById('eliminar_{{ suscriptor_micromedidor.id }}').addEventListener('click', function() {
+                            if (confirm('¿Estás seguro de que deseas eliminar este suscriptor de micromedidor?')) {
+                                window.location.href = "{% url 'eliminarsuscriptormicromedidor' suscriptor_micromedidor.id %}"; 
+                            }
+                        });
+                    </script>
+                    {% endfor %} 
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Agrega las referencias y el script de DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<script>
+    // Inicializa la tabla con DataTables
+    $(document).ready(function() {
+        $('#tablaSuscriptoresMicromedidores').DataTable();
+    });
+</script>
+
+{% endblock %}
+

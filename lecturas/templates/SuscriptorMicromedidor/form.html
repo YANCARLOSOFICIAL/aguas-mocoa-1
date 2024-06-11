@@ -1,0 +1,13 @@
+<!-- suscriptormicromedidor_form.html -->
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-3">
+        <label class="form-check-label">{{ field.label }} </label>
+        {{ field }}
+        <div class="col-12 help-text">{{ field.errors }}</div>
+    </div>
+    {% endfor %}
+    <input name="" id="" class="btn btn-primary" type="submit" value="Guardar">
+</form>
+

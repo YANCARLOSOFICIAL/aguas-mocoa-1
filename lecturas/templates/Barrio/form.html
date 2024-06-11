@@ -1,0 +1,26 @@
+<!-- barrio_form.html -->
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mb-3">
+        <label class="form-check-label">{{ field.label }} </label>
+        {% if field.name == 'barrio' %}
+        {{ field }}
+        {% elif field.name == 'zona' %}
+        <select name="{{ field.name }}" class="form-control">
+            {% for value, label in field.field.choices %}
+            <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        {% if field.errors %}
+        <div class="col-12 error-text">
+            {% for error in field.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <input name="guardar" class="btn btn-primary" type="submit" value="Guardar">
+</form>

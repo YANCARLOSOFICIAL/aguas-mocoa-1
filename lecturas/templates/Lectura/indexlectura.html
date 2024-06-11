@@ -1,0 +1,80 @@
+<!-- indexlectura.html -->
+
+{% extends 'layout.html' %}
+{% block titulo %} INDEX DE LECTURAS {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Lecturas Registradas</h4>
+        <p class="card-text">
+            <a class="btn btn-success" href="{% url 'crearlectura' %}" role="button">Registrar Nueva Lectura</a>
+            <a href="{% url 'descargar_csv' %}" class="btn btn-primary">Descargar informe de lecturas</a>
+        </p>
+
+        <div class="table-responsive"> 
+            <table id="tablaLecturas" class="table table-striped table-borderless table-primary align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Suscriptor</th>
+                        <th>Micromedidor</th>
+                        <th>Mes Anterior</th>
+                        <th>Mes Actual</th>
+                        <th>Lectura Anterior</th>
+                        <th>Lectura Actual</th>
+                        <th>Consumo Total</th>
+                        <th>Fecha de Lectura</th>
+                        <th>Observaciones</th>
+                        <th>Tipo de Lectura</th>
+                        <th>Estado del Micromedidor</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for lectura in lecturas %}
+                    <tr class="table-primary">
+                        <td>{{ lectura.id }}</td>
+                        <td>{{ lectura.suscriptor_micromedidor.suscriptor.primer_nombre }} {{ lectura.suscriptor_micromedidor.suscriptor.segundo_nombre }} {{ lectura.suscriptor_micromedidor.suscriptor.primer_apellido }} {{ lectura.suscriptor_micromedidor.suscriptor.segundo_apellido }}</td>
+                        <td>{{ lectura.suscriptor_micromedidor.micromedidor.medidor }}</td>
+                        <td>{{ lectura.mes_anterior }}</td>
+                        <td>{{ lectura.mes_actual }}</td>
+                        <td>{{ lectura.lectura_anterior }}</td>
+                        <td>{{ lectura.lectura_actual }}</td>
+                        <td>{{ lectura.consumototal }}</td>
+                        <td>{{ lectura.FechaLectura }}</td>
+                        <td>{{ lectura.Observaciones }}</td>
+                        <td>{{ lectura.get_tipo_lectura_display }}</td>
+                        <td>{{ lectura.get_estado_micromedidor_display }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'editarlectura' lectura.id %}" role="button">Editar</a>
+                            <a id="eliminar_{{ lectura.id }}" class="btn btn-danger" href="#" role="button">Eliminar</a>
+                        </td>
+                    </tr>
+                    <script>
+                        document.getElementById('eliminar_{{ lectura.id }}').addEventListener('click', function() {
+                            if (confirm('¿Estás seguro de que deseas eliminar esta lectura?')) {
+                                window.location.href = "{% url 'eliminarlectura' lectura.id %}";
+                            }
+                        });
+                    </script>
+                    {% endfor %}
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Agrega las referencias y el script de DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<script>
+    // Inicializa la tabla con DataTables
+    $(document).ready(function() {
+        $('#tablaLecturas').DataTable();
+    });
+</script>
+
+{% endblock %}

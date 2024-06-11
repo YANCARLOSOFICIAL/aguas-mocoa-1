@@ -1,0 +1,87 @@
+
+<!-- registration/login.html -->
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <link rel="icon" type="image/png" href="{% static 'img/logotipo.png' %}">
+   
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+ 
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/uf-style.css' %}">
+    <title>Login</title>
+</head>
+<body>
+    <div class="uf-form-signin">
+        <div class="text-center">
+            <img src="{% static 'img/logotipo.png' %}" alt="" width="100" height="100">
+            <h1 class="text-white h3">LOGIN</h1>
+        </div>
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="input-group uf-input-group input-group-lg mb-3">
+                <span class="input-group-text fa fa-user"></span>
+                {{ form.username }}
+            </div>
+            <div class="input-group uf-input-group input-group-lg mb-3">
+                <span class="input-group-text fa fa-lock"></span>
+                {{ form.password }}
+            </div>
+            <div class="d-grid mb-4">
+                <button type="submit" class="btn uf-btn-primary btn-lg">Login</button>
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+
+
+
+<!--
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <title>login</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Login</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary btn-block" type="submit">INICIO DE SESIÓN</button>
+                            </div>
+                        </form>
+                        <a href="{% url 'layout' %}" class="card-link">Inicio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+-->
+
+
